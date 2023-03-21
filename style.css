@@ -1,0 +1,46 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+.container{
+    /* width: 50%; */
+    margin: 0 auto;
+}
+
+input{
+    width: 89%;
+    padding: 5%;
+    border: 3px solid #f2f2f2;
+}
+
+table{
+    border: 3px solid #f2f2f2;
+    margin: 5% auto;
+
+  }
+table{
+    width: 30%;
+}
+.equal-button{
+    padding:135% 41%;
+    background-color: #429eff;
+    color:white;
+    border: none;
+
+}
+
+button{
+    padding: 11% 41%;
+    font-size: 1.3rem;
+    border: 2px solid #f2f2f2;
+    background-color: #fafafa;
+}
+
+
+tbody >tr:nth-child(2) button{
+background-color: #e1e1e1;
+}
+td{
+    padding: 1%;
+}

@@ -18,18 +18,19 @@ buttons.forEach(function (button) {
         let checkingRepatedOperator = presentValue[presentValue.length - 1]
         console.log(presentValue.length - 1)
         if (value !== '=') {
-            if(presentValue.length - 1!==0){
-            if (checkingRepatedOperator === '-'
-                || checkingRepatedOperator === '*'
-                || checkingRepatedOperator === '+'
-                || checkingRepatedOperator === '-') {
-                if (!(presentValue[presentValue.length - 2] >= 0
-                    && presentValue[presentValue.length - 2] <= 9)) {
+            if (presentValue.length - 1 !== 0) {
+                if (checkingRepatedOperator === '-'
+                    || checkingRepatedOperator === '*'
+                    || checkingRepatedOperator === '+'
+                    || checkingRepatedOperator === '-') {
+                    if (!(presentValue[presentValue.length - 2] >= 0
+                        && presentValue[presentValue.length - 2] <= 9)) {
                         alert('Two operator continous')
-                        document.querySelector('.screen').value = ''
+                        let showAfterReaptedOperator = presentValue.slice(0, -1)
+                        document.querySelector('.screen').value = showAfterReaptedOperator
+                    }
                 }
             }
-        }
         }
         if (value === "=") {
             let checkingLastOperatorWithoutNumber = presentValue[presentValue.length - 2]
@@ -41,7 +42,7 @@ buttons.forEach(function (button) {
                 document.querySelector('.screen').value = ''
             }
             else {
-                let solveValue=presentValue.slice(0, -1)
+                let solveValue = presentValue.slice(0, -1)
                 console.log(solveValue)
                 startEvaluation(solveValue)
             }
@@ -161,7 +162,7 @@ function startEvaluation(equation) {
 
     // FINAL RESULT
     console.log(`FINAL RESULT = ${finalResult}`)
-console.log(document.getElementsByClassName('screen').value)
+    console.log(document.getElementsByClassName('screen').value)
     screen.value = finalResult
 }
 

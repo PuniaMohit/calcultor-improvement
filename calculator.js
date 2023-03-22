@@ -54,19 +54,13 @@ buttons.forEach(function (button) {
 function startEvaluation(equation) {
     console.log(equation)
 
-    // console.log(eval(equation))
-
-    // var equation = prompt("Enter the equation")
-
-    // Creating empty arrays for storing
-    // brackets, operators, operands
-    var brackets = []
-    var operators = []
-    var operands = []
-    var operandString = ""
+    let brackets = []
+    let operators = []
+    let operands = []
+    let operandString = ""
 
 
-    for (var index = 0, operatorIndex = 0, bracketIndex = 0; index < equation.length; index++) {
+    for (let index = 0, operatorIndex = 0, bracketIndex = 0; index < equation.length; index++) {
 
         // Checking for operators
         if (equation.charAt(index) == '+'
@@ -74,28 +68,13 @@ function startEvaluation(equation) {
             || equation.charAt(index) == '*'
             || equation.charAt(index) == '/') {
 
-            // Below condition is to deal with (a+b)+(c+d) this part of equation
-            if (equation.charAt(index - 1) == ')' && equation.charAt(index + 1) == '(') {
-                operators[operatorIndex++] = "*"
-                brackets[bracketIndex++] = null
-                brackets[bracketIndex++] = null
-                operators[operatorIndex++] = equation.charAt(index)
-                operandString += " 1 "
-            }
-            // Fetching operators and storing into operators[] array
-            else {
+         
                 operators[operatorIndex++] = equation.charAt(index)
                 brackets[bracketIndex++] = null
 
                 operandString += " "
-            }
         }
-        // Fetching brackets and storing into brackets[] array
-        else if (equation.charAt(index) == '(' || equation.charAt(index) == ')') {
-            brackets[bracketIndex++] = equation.charAt(index)
-            operators[operatorIndex++] = null
-        }
-        // Fetching operand digits and storing into operandString
+       
         else {
             operandString += equation.charAt(index)
         }
@@ -118,40 +97,13 @@ function startEvaluation(equation) {
 
 
 
-    console.log(brackets)
-    console.log(operators)
-    console.log(operands)
 
 
     // Result variables
-    var result = 0
-    var finalResult = 0
+    let result = 0
+    let finalResult = 0
 
-    // Checking if brackets are present in the equation or not
-    if (brackets.length > 0) {
-
-        for (var index = 0; index < brackets.length; index++) {
-
-            // Checking for occurance of closing bracket
-            // and then searching for its corresponding
-            // opening bracket by reverse traversing
-            // and then evaluating that particular bracket equation
-            // PROCESSES NESTED BRACKETS AS WELL
-            if (brackets[index] == ')') {
-                var indexBracketEnd = index
-                for (var indexBracket = indexBracketEnd; indexBracket >= 0; indexBracket--) {
-                    if (brackets[indexBracket] == '(') {
-                        var indexBracketStart = indexBracket
-                        evaluate(indexBracketStart, indexBracketEnd, operators, operands)
-                        brackets[indexBracketStart] = null
-                        brackets[indexBracketEnd] = null
-                        break
-                    }
-                }
-                console.log(brackets)
-            }
-        }
-    }
+  
 
 
 
@@ -170,14 +122,14 @@ function startEvaluation(equation) {
 function evaluate(indexStart, indexEnd, operators, operands) {
 
     // First evaluating MULTIPLICATION and DIVISION
-    for (var index = indexStart; index < indexEnd; index++) {
+    for (let index = indexStart; index < indexEnd; index++) {
 
-        var indexFirstOperand = index
-        var indexNextOperand = index + 1
-        var indexNextOperator = index
+        let indexFirstOperand = index
+        let indexNextOperand = index + 1
+        let indexNextOperator = index
 
         if (operators[indexNextOperator] == null) {
-            for (var indexNext = indexNextOperator + 1; indexNext < operators.length; indexNext++) {
+            for (let indexNext = indexNextOperator + 1; indexNext < operators.length; indexNext++) {
                 if (operators[indexNext] != null) {
                     indexNextOperator = indexNext
                     indexFirstOperand = indexNext
@@ -189,7 +141,7 @@ function evaluate(indexStart, indexEnd, operators, operands) {
         }
 
         if (operands[indexNextOperand] == null) {
-            for (var indexNext = indexNextOperand + 1; indexNext < operands.length; indexNext++) {
+            for (let indexNext = indexNextOperand + 1; indexNext < operands.length; indexNext++) {
                 if (operands[indexNext] != null) {
                     indexNextOperand = indexNext
                     index = indexNext - 1
@@ -227,14 +179,14 @@ function evaluate(indexStart, indexEnd, operators, operands) {
     }
 
     // Next evaluating ADDITION and SUBSTRACTION
-    for (var index = indexStart; index < indexEnd; index++) {
+    for (let index = indexStart; index < indexEnd; index++) {
 
-        var indexFirstOperand = index
-        var indexNextOperand = index + 1
-        var indexNextOperator = index
+        let indexFirstOperand = index
+        let indexNextOperand = index + 1
+        let indexNextOperator = index
 
         if (operators[indexNextOperator] == null) {
-            for (var indexNext = indexNextOperator + 1; indexNext < operators.length; indexNext++) {
+            for (let indexNext = indexNextOperator + 1; indexNext < operators.length; indexNext++) {
                 if (operators[indexNext] != null) {
                     indexNextOperator = indexNext
                     indexFirstOperand = indexNext
@@ -246,7 +198,7 @@ function evaluate(indexStart, indexEnd, operators, operands) {
         }
 
         if (operands[indexNextOperand] == null) {
-            for (var indexNext = indexNextOperand + 1; indexNext < operands.length; indexNext++) {
+            for (let indexNext = indexNextOperand + 1; indexNext < operands.length; indexNext++) {
                 if (operands[indexNext] != null) {
                     indexNextOperand = indexNext
                     index = indexNext - 1

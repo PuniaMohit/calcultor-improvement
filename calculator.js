@@ -53,59 +53,41 @@ buttons.forEach(function (button) {
 
 function startEvaluation(equation) {
     console.log(equation)
-
-    let brackets = []
     let operators = []
     let operands = []
     let operandString = ""
 
-
     for (let index = 0, operatorIndex = 0, bracketIndex = 0; index < equation.length; index++) {
-
-        // Checking for operators
+       
         if (equation.charAt(index) == '+'
             || equation.charAt(index) == '-'
             || equation.charAt(index) == '*'
             || equation.charAt(index) == '/') {
-
-         
-                operators[operatorIndex++] = equation.charAt(index)
-                brackets[bracketIndex++] = null
-
-                operandString += " "
+          
+            operators[operatorIndex++] = equation.charAt(index)
+            operandString += " "
         }
-       
         else {
             operandString += equation.charAt(index)
         }
     }
-
-    // Temp array of operands for further processing
-    // before storing operands into operands[] array
+    
     operandsTemp = operandString.split(" ")
+console.log(operandsTemp)  // in string here in array
+console.log(operators)    // array operator in string
 
     // Storing operands into operands[] array
     for (var index = 0, indexOperand = 0; index < operators.length; index++) {
-        if (brackets[index] == null) {
             operands[index] = Number(operandsTemp[indexOperand++])
-        }
-        else {
-            operands[index] = null
-        }
+            console.log(operands)
     }
     operands[operands.length] = Number(operandsTemp[indexOperand])
-
-
-
+    console.log(operands)   //in number here in array
 
 
     // Result variables
     let result = 0
     let finalResult = 0
-
-  
-
-
 
     // This will evaluate remaining equation (without brackets)
     // after processing brackets (if available)
@@ -153,13 +135,11 @@ function evaluate(indexStart, indexEnd, operators, operands) {
         // MULTIPLICATION 
         if (operators[indexNextOperator] == '*') {
             result = operands[indexFirstOperand] * operands[indexNextOperand]
-
             operands[indexNextOperand] = result
             operands[indexFirstOperand] = null
             operators[indexNextOperator] = null
             finalResult = result
             result = 0
-
             console.log(operands)
             console.log(operators)
         }
@@ -180,7 +160,7 @@ function evaluate(indexStart, indexEnd, operators, operands) {
 
     // Next evaluating ADDITION and SUBSTRACTION
     for (let index = indexStart; index < indexEnd; index++) {
-
+console.log(index)
         let indexFirstOperand = index
         let indexNextOperand = index + 1
         let indexNextOperator = index
@@ -210,23 +190,23 @@ function evaluate(indexStart, indexEnd, operators, operands) {
         // ADDITION 
         if (operators[indexNextOperator] == '+') {
             result = operands[indexFirstOperand] + operands[indexNextOperand]
-
             operands[indexNextOperand] = result
             operands[indexFirstOperand] = null
             operators[indexNextOperator] = null
             finalResult = result
             result = 0
-
             console.log(operands)
             console.log(operators)
         }
         // SUBSTRACTION
         else if (operators[indexNextOperator] == '-') {
+            
             result = operands[indexFirstOperand] - operands[indexNextOperand]
-
             operands[indexNextOperand] = result
             operands[indexFirstOperand] = null
             operators[indexNextOperator] = null
+            console.log(operands)
+            console.log(operators)
             finalResult = result
             result = 0
 
@@ -234,7 +214,7 @@ function evaluate(indexStart, indexEnd, operators, operands) {
             console.log(operators)
         }
     }
-
     // Returning FINAL RESULT
+    console.log(finalResult)
     return finalResult
 }

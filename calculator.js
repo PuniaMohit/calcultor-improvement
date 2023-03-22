@@ -7,7 +7,6 @@ let flag = 0;
 function off() {
     console.log('hello')
     document.querySelector('.screen').value = '';
-    flag = 0;
 }
 
 buttons.forEach(function (button) {
@@ -16,10 +15,23 @@ buttons.forEach(function (button) {
         document.querySelector('.screen').value += value
         let presentValue = document.querySelector('.screen').value
         let checkingRepatedOperator = presentValue[presentValue.length - 1]
-        console.log(presentValue.length - 1)
+        let lastShowingThing=presentValue[presentValue.length - 1]
+        let secondLastShowingThing=presentValue[presentValue.length - 2]
+        console.log(lastShowingThing)
         if (value !== '=') {
             if (presentValue.length - 1 !== 0) {
-                if (checkingRepatedOperator === '-'
+                console.log(presentValue[presentValue.length - 1])
+                if(lastShowingThing==='.'){  // in between . than 0.
+                    if(['/','*','+','-'].includes(presentValue[presentValue.length - 2])){
+                        // document.querySelector('.screen').value
+                        //write code to insert 0 in second last place of string
+                    }
+                    if(presentValue[presentValue.length - 2]==='.'){
+                        alert('invalid number')
+                        //write code to remove last . decimal
+                    }
+                }
+                if (checkingRepatedOperator === '/'
                     || checkingRepatedOperator === '*'
                     || checkingRepatedOperator === '+'
                     || checkingRepatedOperator === '-') {
@@ -31,6 +43,11 @@ buttons.forEach(function (button) {
                     }
                 }
             }
+            else{   //if first time . than it will be 0.
+                if(lastShowingThing==='.'){
+                      // write to insert o in front of .   , in first letters of question
+                }      
+            }
         }
         if (value === "=") {
             let checkingLastOperatorWithoutNumber = presentValue[presentValue.length - 2]
@@ -38,7 +55,7 @@ buttons.forEach(function (button) {
                 || checkingLastOperatorWithoutNumber === '*'
                 || checkingLastOperatorWithoutNumber === '+'
                 || checkingLastOperatorWithoutNumber === '-') {
-                alert('enter valid number')
+                alert('enter valid number')  //checking if just after operator no equal sign
                 document.querySelector('.screen').value = ''
             }
             else {

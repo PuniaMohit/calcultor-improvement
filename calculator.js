@@ -16,10 +16,9 @@ buttons.forEach(function (button) {
         document.querySelector('.screen').value += value
         let presentValue = document.querySelector('.screen').value
         let checkingRepatedOperator = presentValue[presentValue.length - 1]
+        console.log(presentValue.length - 1)
         if (value !== '=') {
-            console.log('equal')
-            console.log(presentValue[presentValue.length - 2])
-            console.log(checkingRepatedOperator)
+            if(presentValue.length - 1!==0){
             if (checkingRepatedOperator === '-'
                 || checkingRepatedOperator === '*'
                 || checkingRepatedOperator === '+'
@@ -30,6 +29,7 @@ buttons.forEach(function (button) {
                         document.querySelector('.screen').value = ''
                 }
             }
+        }
         }
         if (value === "=") {
             let checkingLastOperatorWithoutNumber = presentValue[presentValue.length - 2]
@@ -43,146 +43,245 @@ buttons.forEach(function (button) {
             else {
                 let solveValue=presentValue.slice(0, -1)
                 console.log(solveValue)
-            //  for()
+                startEvaluation(solveValue)
             }
         }
-
-
-        // if(value === 'On' || value === 'Off'){
-        //     return;
-        // }
-        // else if(value === '='){
-        //     flag = 1;
-        //     let postfix = convertToPostfix(document.querySelector('.screen').value);
-        //     console.log(postfix)
-        //     let answer = postfix_evaluation(postfix);
-        //     document.querySelector('.screen').value = '';
-        //     console.log(answer)
-        //     document.querySelector('.screen').value = answer;
-        //     setInterval(function(){
-        //         flag = 0;
-        //     }, 100);
-        // }
-        // if(flag == 0){
-        //     document.querySelector('.screen').value += value;    
-        // }
     })
 });
 
 
+function startEvaluation(equation) {
+    console.log(equation)
 
-let priority = function (operator) {
-    switch (operator) {
-        case '+':
-        case '-':
-            return (1);
-        case '*':
-        case '/':
-            return (2);
-        default:
-            return (-1);
-    }
-}
-let calculateValue = function (num1, operator, num2) {
-    switch (operator) {
-        case '+':
-            return (num1 + num2);
-        case '-':
-            return (num1 - num2);
-        case '*':
-            return (num1 * num2);
-        case '/':
-            return (num1 / num2);
-    }
-}
+    // console.log(eval(equation))
 
-let convertToPostfix = function (infix) {
-    let operators = [];
-    let postfix = '';
-    for (var i = 0; i < infix.length; i++) {
-        if ((infix[i] >= '0' && infix[i] <= '9') || infix[i] == '.') {
-            postfix += infix[i];
-            console.log(postfix)
-        }
-        else {
+    // var equation = prompt("Enter the equation")
 
-            postfix += ' ';
-            if (operators.length === 0) {
-                console.log('pahla else wala')
-                operators.push(infix[i]);
-                console.log(operators)
+    // Creating empty arrays for storing
+    // brackets, operators, operands
+    var brackets = []
+    var operators = []
+    var operands = []
+    var operandString = ""
+
+
+    for (var index = 0, operatorIndex = 0, bracketIndex = 0; index < equation.length; index++) {
+
+        // Checking for operators
+        if (equation.charAt(index) == '+'
+            || equation.charAt(index) == '-'
+            || equation.charAt(index) == '*'
+            || equation.charAt(index) == '/') {
+
+            // Below condition is to deal with (a+b)+(c+d) this part of equation
+            if (equation.charAt(index - 1) == ')' && equation.charAt(index + 1) == '(') {
+                operators[operatorIndex++] = "*"
+                brackets[bracketIndex++] = null
+                brackets[bracketIndex++] = null
+                operators[operatorIndex++] = equation.charAt(index)
+                operandString += " 1 "
             }
+            // Fetching operators and storing into operators[] array
             else {
-                if (priority(infix[i]) > priority(operators[operators.length - 1])) {
-                    console.log('else dusra wala')
-                    operators.push(infix[i]);
-                    console.log(operators)
-                }
-                else {
-                    while (!(operators.length === 0) && priority(infix[i]) <= priority(operators[operators.length - 1])) {
-                        console.log('if else wala ...phla while')
-                        let ch = operators[operators.length - 1];
-                        operators.pop();
-                        postfix += ch;
-                    }
-                    operators.push(infix[i]);
-                    console.log(operators)
-                }
+                operators[operatorIndex++] = equation.charAt(index)
+                brackets[bracketIndex++] = null
+
+                operandString += " "
             }
         }
+        // Fetching brackets and storing into brackets[] array
+        else if (equation.charAt(index) == '(' || equation.charAt(index) == ')') {
+            brackets[bracketIndex++] = equation.charAt(index)
+            operators[operatorIndex++] = null
+        }
+        // Fetching operand digits and storing into operandString
+        else {
+            operandString += equation.charAt(index)
+        }
     }
-    console.log(operators)
-    postfix += ' ';
-    while (!(operators.length === 0)) {
-        console.log('dusre wala while')
-        let ch = operators[operators.length - 1];
-        postfix += ch;
-        operators.pop();
-    }
-    return (postfix);
-}
 
-var postfix_evaluation = function (postfix) {
-    let answer = [], n, result;
-    for (var i = 0; i < postfix.length; i++) {
-        if ((postfix[i] >= '0' && postfix[i] <= '9') || postfix[i] == '.') {
-            let number = '';
-            while (postfix[i] != ' ') {
-                number += postfix[i];
-                i++;
-                console.log(number)
-            }
-            n = parseFloat(number);
-            answer.push(n);
-            console.log(answer)
+    // Temp array of operands for further processing
+    // before storing operands into operands[] array
+    operandsTemp = operandString.split(" ")
+
+    // Storing operands into operands[] array
+    for (var index = 0, indexOperand = 0; index < operators.length; index++) {
+        if (brackets[index] == null) {
+            operands[index] = Number(operandsTemp[indexOperand++])
         }
         else {
-            console.log("else me gya")
-            if (answer.length < 2) {
-                console.log("helloanswers")
-                result = 'INVALID';
-                return (result);
-            } else {
-                console.log("dusre else me gya")
-                let num2 = answer[answer.length - 1];
-                console.log(num2)
-                answer.pop();
-                let num1 = answer[answer.length - 1];
-                console.log(num1)
-                answer.pop();
-                console.log(postfix[i])
-                result = calculateValue(num1, postfix[i], num2);
-                answer.push(result);
-                console.log(answer)
+            operands[index] = null
+        }
+    }
+    operands[operands.length] = Number(operandsTemp[indexOperand])
+
+
+
+    console.log(brackets)
+    console.log(operators)
+    console.log(operands)
+
+
+    // Result variables
+    var result = 0
+    var finalResult = 0
+
+    // Checking if brackets are present in the equation or not
+    if (brackets.length > 0) {
+
+        for (var index = 0; index < brackets.length; index++) {
+
+            // Checking for occurance of closing bracket
+            // and then searching for its corresponding
+            // opening bracket by reverse traversing
+            // and then evaluating that particular bracket equation
+            // PROCESSES NESTED BRACKETS AS WELL
+            if (brackets[index] == ')') {
+                var indexBracketEnd = index
+                for (var indexBracket = indexBracketEnd; indexBracket >= 0; indexBracket--) {
+                    if (brackets[indexBracket] == '(') {
+                        var indexBracketStart = indexBracket
+                        evaluate(indexBracketStart, indexBracketEnd, operators, operands)
+                        brackets[indexBracketStart] = null
+                        brackets[indexBracketEnd] = null
+                        break
+                    }
+                }
+                console.log(brackets)
             }
         }
     }
-    let finalAns = answer[answer.length - 1];
-    console.log(finalAns)
-    answer.pop();
-    if (answer.length === 0) {
-        return (finalAns);
-    } else {
-        return ('INVALID');
+
+
+
+    // This will evaluate remaining equation (without brackets)
+    // after processing brackets (if available)
+    finalResult = evaluate(0, operators.length, operators, operands)
+
+
+    // FINAL RESULT
+    console.log(`FINAL RESULT = ${finalResult}`)
+console.log(document.getElementsByClassName('screen').value)
+    screen.value = finalResult
+}
+
+// Evaluation of equation by using BOAD MASS method
+function evaluate(indexStart, indexEnd, operators, operands) {
+
+    // First evaluating MULTIPLICATION and DIVISION
+    for (var index = indexStart; index < indexEnd; index++) {
+
+        var indexFirstOperand = index
+        var indexNextOperand = index + 1
+        var indexNextOperator = index
+
+        if (operators[indexNextOperator] == null) {
+            for (var indexNext = indexNextOperator + 1; indexNext < operators.length; indexNext++) {
+                if (operators[indexNext] != null) {
+                    indexNextOperator = indexNext
+                    indexFirstOperand = indexNext
+                    indexNextOperand = indexNext + 1
+                    index = indexNext - 1
+                    break
+                }
+            }
+        }
+
+        if (operands[indexNextOperand] == null) {
+            for (var indexNext = indexNextOperand + 1; indexNext < operands.length; indexNext++) {
+                if (operands[indexNext] != null) {
+                    indexNextOperand = indexNext
+                    index = indexNext - 1
+                    break
+                }
+            }
+        }
+
+        // MULTIPLICATION 
+        if (operators[indexNextOperator] == '*') {
+            result = operands[indexFirstOperand] * operands[indexNextOperand]
+
+            operands[indexNextOperand] = result
+            operands[indexFirstOperand] = null
+            operators[indexNextOperator] = null
+            finalResult = result
+            result = 0
+
+            console.log(operands)
+            console.log(operators)
+        }
+        // DIVISION
+        else if (operators[indexNextOperator] == '/') {
+            result = operands[indexFirstOperand] / operands[indexNextOperand]
+
+            operands[indexNextOperand] = result
+            operands[indexFirstOperand] = null
+            operators[indexNextOperator] = null
+            finalResult = result
+            result = 0
+
+            console.log(operands)
+            console.log(operators)
+        }
     }
+
+    // Next evaluating ADDITION and SUBSTRACTION
+    for (var index = indexStart; index < indexEnd; index++) {
+
+        var indexFirstOperand = index
+        var indexNextOperand = index + 1
+        var indexNextOperator = index
+
+        if (operators[indexNextOperator] == null) {
+            for (var indexNext = indexNextOperator + 1; indexNext < operators.length; indexNext++) {
+                if (operators[indexNext] != null) {
+                    indexNextOperator = indexNext
+                    indexFirstOperand = indexNext
+                    indexNextOperand = indexNext + 1
+                    index = indexNext - 1
+                    break
+                }
+            }
+        }
+
+        if (operands[indexNextOperand] == null) {
+            for (var indexNext = indexNextOperand + 1; indexNext < operands.length; indexNext++) {
+                if (operands[indexNext] != null) {
+                    indexNextOperand = indexNext
+                    index = indexNext - 1
+                    break
+                }
+            }
+        }
+
+        // ADDITION 
+        if (operators[indexNextOperator] == '+') {
+            result = operands[indexFirstOperand] + operands[indexNextOperand]
+
+            operands[indexNextOperand] = result
+            operands[indexFirstOperand] = null
+            operators[indexNextOperator] = null
+            finalResult = result
+            result = 0
+
+            console.log(operands)
+            console.log(operators)
+        }
+        // SUBSTRACTION
+        else if (operators[indexNextOperator] == '-') {
+            result = operands[indexFirstOperand] - operands[indexNextOperand]
+
+            operands[indexNextOperand] = result
+            operands[indexFirstOperand] = null
+            operators[indexNextOperator] = null
+            finalResult = result
+            result = 0
+
+            console.log(operands)
+            console.log(operators)
+        }
+    }
+
+    // Returning FINAL RESULT
+    return finalResult
 }

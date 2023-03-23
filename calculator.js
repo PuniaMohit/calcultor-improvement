@@ -30,7 +30,7 @@ buttons.forEach(function (button) {
 
                     // }
                     if (presentValue[presentValue.length - 2] === '.') {
-                        alert('invalid number')
+                        // alert('invalid number')
                         screen.value = screen.value.slice(0, -1)                                  // remove last . decimal from ..
                     }
                     if (presentValue.includes('+') || presentValue.includes('-') || presentValue.includes('*') || presentValue.includes('/')) {
@@ -45,7 +45,7 @@ buttons.forEach(function (button) {
                         }
                         console.log(string)
                        if(string.includes('.')){
-                        alert('invalid number')
+                        // alert('invalid number')
                         screen.value = screen.value.slice(0, -1)
                        }
                     }
@@ -53,7 +53,7 @@ buttons.forEach(function (button) {
                         console.log("hello")
                         let numberWithoutFirstDecimal = screen.value.slice(0, -1)
                        if(numberWithoutFirstDecimal.includes('.')){
-                        alert('invalid number')
+                        // alert('invalid number')
                         screen.value=screen.value.slice(0, -1)
                        }                                                         //  remove second decimal from 5.5.
                                                                                           
@@ -65,7 +65,8 @@ buttons.forEach(function (button) {
                     || checkingRepatedOperator === '-') {
                     if (!(presentValue[presentValue.length - 2] >= 0
                         && presentValue[presentValue.length - 2] <= 9) && !(presentValue[presentValue.length - 2] === '.')) {
-                        alert('Two operator continous')                                 // to stop +/ but ./ not stop
+                        // alert('Two operator continous')   
+                                                      // to stop +/ but ./ not stop
                         let showAfterReaptedOperator = presentValue.slice(0, -1)
                         document.querySelector('.screen').value = showAfterReaptedOperator
                     }
@@ -74,6 +75,10 @@ buttons.forEach(function (button) {
             else {   //if first time . than it will be 0.
                 if (lastShowingThing === '.') {
                     document.querySelector('.screen').value = "0."     // write to insert o in front of .   , in first letters of question
+                }
+                if(lastShowingThing.includes('+')||lastShowingThing.includes('*')||lastShowingThing.includes('/')){
+                    // alert('invalid number')
+                    screen.value=presentValue.slice(0, -1)
                 }
             }
         }
@@ -92,7 +97,8 @@ buttons.forEach(function (button) {
                         || checkingLastOperatorWithoutNumber === '+'
                         || checkingLastOperatorWithoutNumber === '-'
                     ) {
-                        alert('enter valid number')  //checking if just after operator no equal sign
+                        // alert('enter valid number')  
+                        //checking if just after operator no equal sign
                         document.querySelector('.screen').value = ''
                     }
                     else {
